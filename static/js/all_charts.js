@@ -315,7 +315,7 @@ function sliderLoader(selectedCountry, data){
     .select('div#slider-range')
     .append('svg')
     .attr('width', 900)
-    .attr('height', 100)
+    .attr('height', 70)
     .append('g')
     .attr('transform', 'translate(30,30)');
 
@@ -548,7 +548,7 @@ function bubbleScatterLoader(filename, selectedCountry, fromYear, toYear){
 
 let getData = (selectedCountry, val) => {
     d3.select('p#value-range').text(val.join('-'));
-    // drawPieChart(selectedCountry, val[0], val[1]);
+    drawPieChart(selectedCountry, val[0], val[1]);
     drawTimelineChart(selectedCountry, val[0], val[1]);
 };
 

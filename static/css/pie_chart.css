@@ -28,11 +28,8 @@ rect.disabled {
 }
 
 #pie_chart {
-  height: 800px;
-  margin: 0 auto;
   position: relative;
-  display: block;
-  width: 1200px;
+  display: inline-block;
 }
 
 .customTooltip {
