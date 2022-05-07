@@ -1,0 +1,52 @@
+body {
+    font-family: "Arial", sans-serif;
+}
+
+.bar {
+    fill: #5f89ad;
+}
+
+.svgProps {
+    opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 2s;
+}
+
+#layout {
+	width: fit-content;
+	border: 1px solid red;
+	border-radius: 20px;
+}
+
+#bar_chart {
+	width: fit-content;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.axis {
+    font-size: 13px;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    display: none;
+}
+
+.label {
+    font-size: 13px;
+}
+
+.heading {
+	font-size: 20px;
+}
