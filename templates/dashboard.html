@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
-<div class="container" style="margin: 0">
+<div class="container">
   <table class="table table-bordered">
       <tbody>
           {# Range Slider and Country Selector Dropdown#}
@@ -67,9 +67,9 @@
 <script>
     drawCountryDropdown();
     drawYearlySlider("India");
-    drawPieChart("India", 1997, 2006);
-    drawTimelineChart("India", 1990, 1992);
-    drawBarChart("India");
+    drawPieChart("India", 2000, 2010);
+    drawTimelineChart("India", 2000, 2010);
+    drawBarChart("India", 2000, 2010);
     $(document).ready(function() {
         $('.js-example-basic-single').select2();
     });

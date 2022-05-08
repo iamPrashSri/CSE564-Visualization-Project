@@ -16,20 +16,27 @@ def loadHomeDashboard():
 @app.route('/bar_chart', methods = ['GET'])
 def loadBarChart():
     country = request.args.get("country")
+    fromYear = int(request.args.get("fromYear"))
+    toYear = int(request.args.get("toYear"))
+
     # Prepare data
-    overallDeaths = pd.read_csv('static/data/overallDeaths.csv')
-    overallDeaths = overallDeaths.drop(columns=['Unnamed: 0'])
-    deathForCountryDf = overallDeaths[overallDeaths['Entity'] == country]
+    overallDeathsByYear = pd.read_csv('static/data/overallDeathsByCountryAndYear.csv')
+    overallDeathsByYear = overallDeathsByYear.drop(columns=['Unnamed: 0'])
+    deathForCountryDf = overallDeathsByYear[overallDeathsByYear['Entity'] == country]
+    deathForCountryDf = deathForCountryDf[deathForCountryDf['Year'] >= fromYear]
+    deathForCountryDf = deathForCountryDf[deathForCountryDf['Year'] <= toYear]
+    deathForCountryDf = deathForCountryDf.drop(columns=['Year'])
+    deathForCountryDf = deathForCountryDf.groupby('Entity').sum().reset_index()
     deathForCountryDf = deathForCountryDf.drop(columns=['Entity'])
 
     column_headers = deathForCountryDf.columns.values
     deathsData = deathForCountryDf.values[0]
     diseasesCSV = []
     for i in range(len(deathsData)):
-        diseasesCSV.append((column_headers[i], math.ceil(deathsData[i])))
+        diseasesCSV.append((column_headers[i], deathsData[i]))
 
     diseaseCount_df = pd.DataFrame(diseasesCSV)
-    filename = 'static/data/diseaseCount.csv'
+    filename = 'static/data/PieDCountCtryAndYear.csv'
     diseaseCount_df.columns = ['Disease', 'Deaths']
     diseaseCount_df.to_csv(filename)
     return jsonify(key="success")
