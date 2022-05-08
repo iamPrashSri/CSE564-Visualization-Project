@@ -12,7 +12,7 @@ function drawBarChart(selectedCountry, fromYear, toYear){
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
             let filename = 'static/data/PieDCountCtryAndYear.csv';
-            barChartLoader(filename, selectedCountry, fromYear, toYear);
+            barChartLoader(filename, selectedCountry, fromYear, toYear, undefined);
         }
     });
 }
@@ -55,7 +55,7 @@ function drawTimelineChart(selectedCountry, fromYear, toYear){
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
             let filename = 'static/data/TimelineCntCountryWise.csv';
-            timelineChartLoader(filename, selectedCountry, fromYear, toYear);
+            timelineChartLoader(filename, selectedCountry, fromYear, toYear, undefined);
         }
     });
 }

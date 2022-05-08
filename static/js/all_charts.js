@@ -1,18 +1,29 @@
-function barChartLoader(filename, selectedCountry, fromYear, toYear){
+function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToShow){
     document.getElementById("bar_chart").innerHTML = "";
     d3.csv(filename, function(error, data){
         data.forEach(function (d) {
             d.Deaths = +d.Deaths;
         });
 
+        let filteredData = [];
+        if(diseasesToShow === undefined){
+            filteredData = data;
+        } else {
+            data.forEach(function (d) {
+                if(diseasesToShow.includes(d['Disease'])){
+                    filteredData.push(d);
+                }
+            });
+        }
+
         var color = d3.scaleOrdinal(d3.schemeCategory10);
         let colorCode = 0;
-        for(let d of data){
+        for(let d of filteredData){
             d['colorCode'] = colorCode++%10;
         }
 
         //sort bars based on value
-        data = data.sort(function (a, b) {
+        filteredData = filteredData.sort(function (a, b) {
             return d3.ascending(a.Deaths, b.Deaths);
         })
 
@@ -26,7 +37,6 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear){
         var width = 500 - margin.left - margin.right,
             height = 280 - margin.top - margin.bottom;
 
-        document.getElementById("bar_chart").innerHTML = "";
         var svg = d3.select("#bar_chart").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -36,14 +46,14 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear){
 
         var x = d3.scaleLinear()
             .range([0, width])
-            .domain([0, d3.max(data, function (d) {
+            .domain([0, d3.max(filteredData, function (d) {
                 return d.Deaths;
             })]);
 
         var y = d3.scaleBand()
             .rangeRound([height, 0])
             .padding(0.1)
-            .domain(data.map(function (d) {
+            .domain(filteredData.map(function (d) {
                 return d.Disease;
             }));
 
@@ -68,7 +78,7 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear){
             .call(yAxis)
 
         var bars = svg.selectAll(".bar")
-            .data(data)
+            .data(filteredData)
             .enter()
             .append("g")
 
@@ -131,17 +141,20 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
         let dataset = [];
         dataset.push({
             label: "Communicable Diseases",
-            count: no_of_comm_deaths
+            count: no_of_comm_deaths,
+            diseases: comm
         });
 
         dataset.push({
             label: "Non - Communicable Diseases",
-            count: no_of_non_comm_deaths
+            count: no_of_non_comm_deaths,
+            diseases: non_comm
         });
 
         dataset.push({
             label: "Accidents",
-            count: no_of_accidental_deaths
+            count: no_of_accidental_deaths,
+            diseases: accidents
         });
 
         // chart dimensions
@@ -211,9 +224,9 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
           .attr('d', arc) // define d attribute with arc function above
           .attr('fill', function(d) { return color(d.data.label); }) // use color scale to define fill of each label in dataset
           .each(function(d) { this._current - d; }); // creates a smooth animation for each track
-
         // mouse event handlers are attached to path so they need to come after its definition
         path.on('mouseover', function(d) {// when mouse enters div
+         path.style('cursor', 'pointer');
          var total = d3.sum(dataset.map(function(d) { // calculate the total number of tickets in the dataset
           return (d.enabled) ? d.count : 0; // checking to see if the entry is enabled. if it isn't, we return 0 and cause other percentages to increase
           }));
@@ -223,10 +236,9 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
          tooltip.select('.percent').html(percent + '%'); // set percent calculated above
          tooltip.style('display', 'block'); // set display
         });
-
         path.on('mouseout', function() { // when mouse leaves div
           tooltip.style('display', 'none'); // hide tooltip for that element
-         });
+        });
 
         path.on('mousemove', function(d) { // when mouse moves
           tooltip.style('top', (d3.event.layerY + 10) + 'px') // always 10px below the cursor
@@ -257,9 +269,8 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
             var rect = d3.select(this); // this refers to the colored squared just clicked
             var enabled = true; // set enabled true to default
             var totalEnabled = d3.sum(dataset.map(function(d) { // can't disable all options
-              return (d.enabled) ? 1 : 0; // return 1 for each enabled entry. and summing it up
+                return (d.enabled) ? 1 : 0; // return 1 for each enabled entry. and summing it up
             }));
-
             if (rect.attr('class') === 'disabled') { // if class is disabled
               rect.attr('class', ''); // remove class disabled
             } else { // else
@@ -267,13 +278,20 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
               rect.attr('class', 'disabled'); // otherwise flag the square disabled
               enabled = false; // set enabled to false
             }
-
             pie.value(function(d) {
               if (d.label === label) d.enabled = enabled; // if entry label matches legend label
                 return (d.enabled) ? d.count : 0; // update enabled property and return count or 0 based on the entry's status
             });
 
             path = path.data(pie(dataset)); // update pie with new data
+            let diseasesToShow = [];
+            dataset.map(function(d) {
+                if(d.enabled){
+                    for(let disease of d.diseases){
+                       diseasesToShow.push(disease);
+                    }
+                }
+            });
 
             path.transition() // transition of redrawn pie
               .duration(750) //
@@ -284,6 +302,10 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
                   return arc(interpolate(t));
                 };
               });
+
+            // Re - draw barchart and timeline chart with new data points
+            barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToShow);
+            timelineChartLoader('static/data/TimelineCntCountryWise.csv', selectedCountry, fromYear, toYear, diseasesToShow);
           });
 
         // adding text to legend
@@ -327,7 +349,7 @@ function sliderLoader(selectedCountry, data){
   );
 }
 
-function timelineChartLoader(filename, selectedCountry, fromYear, toYear){
+function timelineChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToShow){
     document.getElementById("timeline_chart").innerHTML = "";
     d3.csv(filename, function(error, df){
         let overallDataObj = {};
@@ -361,8 +383,16 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear){
         }
 
         let data = [];
-        for(let key in overallDataObj){
-            data.push(overallDataObj[key]);
+        if(diseasesToShow === undefined){
+            for(let key in overallDataObj){
+                data.push(overallDataObj[key]);
+            }
+        } else {
+            for(let key in overallDataObj){
+                if(diseasesToShow.includes(key)){
+                    data.push(overallDataObj[key]);
+                }
+            }
         }
 
         var width = 350;
