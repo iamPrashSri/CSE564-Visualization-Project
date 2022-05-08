@@ -66,16 +66,31 @@
 <script src="{{ url_for('static', filename='js/all_charts.js') }}"></script>
 <script>
     drawCountryDropdown();
-    drawYearlySlider("India");
-    drawPieChart("India", 2000, 2010);
-    drawTimelineChart("India", 2000, 2010);
-    drawBarChart("India", 2000, 2010);
+    let countrySelectedInDropdown = document.getElementById("countryDropdown").value;
+    if(countrySelectedInDropdown === ""){
+        drawYearlySlider("Afghanistan");
+        drawPieChart("Afghanistan", 2000, 2010);
+        drawTimelineChart("Afghanistan", 2000, 2010);
+        drawBarChart("Afghanistan", 2000, 2010);
+    } else {
+        drawYearlySlider(countrySelectedInDropdown);
+        drawPieChart(countrySelectedInDropdown, 2000, 2010);
+        drawTimelineChart(countrySelectedInDropdown, 2000, 2010);
+        drawBarChart(countrySelectedInDropdown, 2000, 2010);
+    }
     $(document).ready(function() {
         $('.js-example-basic-single').select2();
     });
 
     $(".js-example-basic-single").select2({
         width: 'resolve' // need to override the changed default
+    });
+    $('#countryDropdown').on('select2:select', function (e) {
+        let country = e.params.data.text;
+        drawYearlySlider(country);
+        drawPieChart(country, 2000, 2010);
+        drawTimelineChart(country, 2000, 2010);
+        drawBarChart(country, 2000, 2010);
     });
 </script>
 </body>

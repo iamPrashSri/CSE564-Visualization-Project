@@ -56,7 +56,7 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear){
                 return -70;
             })
             .text(function () {
-                return "Deaths caused over a period from " + fromYear + " to " + toYear + " in " + selectedCountry;
+                return "Deaths caused over a period from " + fromYear + " to " + toYear + " (" + selectedCountry + ")";
             });
 
         var yAxis = d3.axisLeft(y)
@@ -296,6 +296,7 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
 }
 
 function sliderLoader(selectedCountry, data){
+  document.getElementById("slider-range").innerHTML = "";
   var sliderRange = d3
     .sliderBottom()
     .min(d3.min(data))
@@ -487,9 +488,6 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear){
                 .duration(duration)
                 .selectAll(".text").remove();
             })
-          .on("click", function(d) {
-              alert("Clicked");
-            })
           .append("circle")
           .attr("cx", d => xScale(d.date))
           .attr("cy", d => yScale(d.price))
@@ -527,7 +525,7 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear){
                 return 0;
             })
             .text(function () {
-                return "Deaths across all diseases in " + selectedCountry + " from " + fromYear + " to " + toYear;
+                return "Deaths across all diseases from " + fromYear + " to " + toYear + " (" + selectedCountry + ")";
             });
 
         svg.append("g")

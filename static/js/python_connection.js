@@ -1,16 +1,18 @@
 // Bar Chart to show count of all diseases for country. Do not mess with data manipulation logic
-function drawBarChart(selectedCountry){
+function drawBarChart(selectedCountry, fromYear, toYear){
     $.ajax({
         type: "GET",
         data: {
             country: selectedCountry,
+            fromYear: fromYear,
+            toYear: toYear
         },
         url: '/bar_chart',
         dataType: "json",
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
-            let filename = 'static/data/diseaseCount.csv';
-            barChartLoader(filename, selectedCountry);
+            let filename = 'static/data/PieDCountCtryAndYear.csv';
+            barChartLoader(filename, selectedCountry, fromYear, toYear);
         }
     });
 }
