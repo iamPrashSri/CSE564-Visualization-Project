@@ -26,7 +26,7 @@ def loadBarChart():
     deathsData = deathForCountryDf.values[0]
     diseasesCSV = []
     for i in range(len(deathsData)):
-        diseasesCSV.append((column_headers[i], math.ceil(deathsData[i]/100000)))
+        diseasesCSV.append((column_headers[i], math.ceil(deathsData[i])))
 
     diseaseCount_df = pd.DataFrame(diseasesCSV)
     filename = 'static/data/diseaseCount.csv'

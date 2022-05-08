@@ -6,18 +6,16 @@ body {
     fill: #5f89ad;
 }
 
-.svgProps {
-    opacity: 1;
-	animation-name: fadeInOpacity;
-	animation-iteration-count: 1;
-	animation-timing-function: ease-in;
-	animation-duration: 2s;
-}
+/*.svgProps {*/
+/*    opacity: 1;*/
+/*	animation-name: fadeInOpacity;*/
+/*	animation-iteration-count: 1;*/
+/*	animation-timing-function: ease-in;*/
+/*	animation-duration: 2s;*/
+/*}*/
 
 #layout {
 	width: fit-content;
-	border: 1px solid red;
-	border-radius: 20px;
 }
 
 #bar_chart {
@@ -48,5 +46,8 @@ body {
 }
 
 .heading {
-	font-size: 20px;
+	font-size: 12px;
+	margin-bottom: 5px;
+	font-style: italic;
+	font-weight: bold;
 }

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>World Death Analysis</title>
+    <link rel="stylesheet" href="static/css/bar_chart.css">
     <link rel="stylesheet" href="static/css/pie_chart.css">
     <link rel="stylesheet" href="static/css/timeline_chart.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -36,7 +37,9 @@
           </tr>
       </tbody>
   </table>
-  <br/>
+</div>
+<br/>
+<div class="container" style="margin: 0">
   <table class="table table-bordered">
       <tbody>
         <tr>
@@ -46,7 +49,9 @@
             <td>
                 <div id="timeline_chart"></div>
             </td>
-            <td>@mdo</td>
+            <td>
+                <div id="bar_chart"></div>
+            </td>
         </tr>
         <tr>
             <td>Mark</td>
@@ -69,6 +74,7 @@
     drawYearlySlider("India");
     drawPieChart("India", 1997, 2006);
     drawTimelineChart("India", 1990, 1992);
+    drawBarChart("India");
 </script>
 </body>
 </html>

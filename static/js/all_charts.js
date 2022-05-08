@@ -1,30 +1,54 @@
 function barChartLoader(filename, selectedCountry){
     d3.csv(filename, function(error, data){
+        let filteredDiseases = [
+            'Meningitis',
+            'Neoplasms',
+            'Malaria',
+            'Drowning',
+            'Interpersonal violence',
+            'HIV/AIDS',
+            'Tuberculosis',
+            'Road injuries',
+            'Alcohol use disorders',
+            'Nutritional deficiencies',
+            'Self-harm',
+            'Conflict and terrorism',
+            'Cardiovascular diseases',
+            'Digestive diseases',
+            'Acute hepatitis'
+        ];
 
-        data.forEach(function (d) {
+        let filteredData = [];
+        for(let d of data) {
+            if (filteredDiseases.includes(d['Disease'])) {
+                filteredData.push(d);
+            }
+        }
+
+        filteredData.forEach(function (d) {
             d.Deaths = +d.Deaths;
         });
 
-        var color = d3.scale.category10();
+        var color = d3.scaleOrdinal(d3.schemeCategory10);
         let colorCode = 0;
-        for(let d of data){
+        for(let d of filteredData){
             d['colorCode'] = colorCode++%10;
         }
+
         //sort bars based on value
-        data = data.sort(function (a, b) {
+        filteredData = filteredData.sort(function (a, b) {
             return d3.ascending(a.Deaths, b.Deaths);
         })
 
-        // data = data.slice(0, 16);
         var margin = {
-            top: 40,
-            right: 30,
+            top: 10,
+            right: 0,
             bottom: 15,
-            left: 270
+            left: 155
         };
 
-        var width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+        var width = 500 - margin.left - margin.right,
+            height = 280 - margin.top - margin.bottom;
 
         document.getElementById("bar_chart").innerHTML = "";
         var svg = d3.select("#bar_chart").append("svg")
@@ -34,42 +58,41 @@ function barChartLoader(filename, selectedCountry){
             .attr("class", "svgProps")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        var x = d3.scale.linear()
+        var x = d3.scaleLinear()
             .range([0, width])
-            .domain([0, d3.max(data, function (d) {
+            .domain([0, d3.max(filteredData, function (d) {
                 return d.Deaths;
             })]);
 
-        var y = d3.scale.ordinal()
-            .rangeRoundBands([height, 0], .1)
-            .domain(data.map(function (d) {
+        var y = d3.scaleBand()
+            .rangeRound([height, 0])
+            .padding(0.1)
+            .domain(filteredData.map(function (d) {
                 return d.Disease;
             }));
 
         svg.append("text")
             .attr("class", "heading")
             .attr("y", function () {
-                return 0;
+                return 5;
             })
             .attr("x", function () {
-                return -100;
+                return -70;
             })
             .text(function () {
-                return "Deaths caused over a period of 20 years (scaled down by 1 Million): " + selectedCountry;
+                return "Deaths caused over a period of 20 years: " + selectedCountry;
             });
 
-        var yAxis = d3.svg.axis()
-            .scale(y)
+        var yAxis = d3.axisLeft(y)
             //no tick marks
-            .tickSize(0)
-            .orient("left");
+            .tickSize(0);
 
         var gy = svg.append("g")
             .attr("class", "y axis")
             .call(yAxis)
 
         var bars = svg.selectAll(".bar")
-            .data(data)
+            .data(filteredData)
             .enter()
             .append("g")
 
@@ -81,10 +104,10 @@ function barChartLoader(filename, selectedCountry){
             .style("fill", function (d, i) {
                 return color(+d.colorCode);
             })
-            .attr("height", y.rangeBand())
+            .attr("height", y.bandwidth())
             .attr("x", 0)
             .attr("width", function (d) {
-                return x(d.Deaths);
+                return x(d.Deaths/1.5);
             });
 
         //add a value label to the right of each bar
@@ -92,14 +115,14 @@ function barChartLoader(filename, selectedCountry){
             .attr("class", "label")
             //y position of the label is halfway down the bar
             .attr("y", function (d) {
-                return y(d.Disease) + y.rangeBand() / 2 + 4;
+                return y(d.Disease) + y.bandwidth() / 2 + 4;
             })
             //x position is 3 pixels to the right of the bar
             .attr("x", function (d) {
-                return x(d.Deaths) + 3;
+                return x(d.Deaths/1.5) + 3;
             })
             .text(function (d) {
-                return d.Deaths;
+                return d.Deaths.toLocaleString();
             });
     });
 }
@@ -146,7 +169,7 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
         });
 
         // chart dimensions
-        var width = 500;
+        var width = 440;
         var height = 280;
         var radius = 100;
 
@@ -365,7 +388,7 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear){
             data.push(overallDataObj[key]);
         }
 
-        var width = 450;
+        var width = 350;
         var height = 230;
         var margin = 50;
         var duration = 250;
