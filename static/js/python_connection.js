@@ -1,49 +1,3 @@
-function drawChloropethMap(){
-    console.log("Hello");
-    let rename = new Map([
-      ["Antigua and Barbuda", "Antigua and Barb."],
-      ["Bolivia (Plurinational State of)", "Bolivia"],
-      ["Bosnia and Herzegovina", "Bosnia and Herz."],
-      ["Brunei Darussalam", "Brunei"],
-      ["Central African Republic", "Central African Rep."],
-      ["Cook Islands", "Cook Is."],
-      ["Democratic People's Republic of Korea", "North Korea"],
-      ["Democratic Republic of the Congo", "Dem. Rep. Congo"],
-      ["Dominican Republic", "Dominican Rep."],
-      ["Equatorial Guinea", "Eq. Guinea"],
-      ["Iran (Islamic Republic of)", "Iran"],
-      ["Lao People's Democratic Republic", "Laos"],
-      ["Marshall Islands", "Marshall Is."],
-      ["Micronesia (Federated States of)", "Micronesia"],
-      ["Republic of Korea", "South Korea"],
-      ["Republic of Moldova", "Moldova"],
-      ["Russian Federation", "Russia"],
-      ["Saint Kitts and Nevis", "St. Kitts and Nevis"],
-      ["Saint Vincent and the Grenadines", "St. Vin. and Gren."],
-      ["Sao Tome and Principe", "São Tomé and Principe"],
-      ["Solomon Islands", "Solomon Is."],
-      ["South Sudan", "S. Sudan"],
-      ["Swaziland", "eSwatini"],
-      ["Syrian Arab Republic", "Syria"],
-      ["The former Yugoslav Republic of Macedonia", "Macedonia"],
-      ["United Republic of Tanzania", "Tanzania"],
-      ["Venezuela (Bolivarian Republic of)", "Venezuela"],
-      ["Viet Nam", "Vietnam"]
-    ])
-
-    d3.csv("static/data/hale.csv", function(error, data){
-        // let newData = data.map(d => ({name: rename.get(d.country) || d.country, hale: +d.hale}));
-        let svg = Choropleth(data, {
-            id: d => d.name, // country name, e.g. Zimbabwe
-            value: d => d.hale, // health-adjusted life expectancy
-            range: d3.interpolateYlGnBu,
-            featureId: d => d.properties.name,
-            // projection: d3.geoNaturalEarth(),
-        });
-        console.log(svg);
-    });
-}
-
 // Bar Chart to show count of all diseases for country. Do not mess with data manipulation logic
 function drawBarChart(selectedCountry){
     $.ajax({
@@ -104,20 +58,14 @@ function drawTimelineChart(selectedCountry, fromYear, toYear){
     });
 }
 
-function drawBubbleScatterChart(selectedCountry, fromYear, toYear){
+function drawCountryDropdown(){
     $.ajax({
         type: "GET",
-        data: {
-            country: selectedCountry,
-            fromYear: fromYear,
-            toYear: toYear
-        },
-        url: '/timeline_chart',
+        url: '/getListOfCountries',
         dataType: "json",
         contentType: 'application/json;charset=UTF-8',
-        success: function (data) {
-            let filename = '';
-            bubbleScatterLoader(filename, selectedCountry, fromYear, toYear);
+        success: function (allCountries) {
+            dropdownLoader(allCountries.allCountries);
         }
     });
 }

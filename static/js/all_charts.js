@@ -565,8 +565,15 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear){
     });
 }
 
-function bubbleScatterLoader(filename, selectedCountry, fromYear, toYear){
-    // Do Something
+function dropdownLoader(allCountries){
+    let dropdownSelector = document.getElementById("countryDropdown");
+    console.log(dropdownSelector.children);
+    for(let country of allCountries){
+        let option = document.createElement("option");
+        option.value = country;
+        option.text = country;
+        dropdownSelector.add(option);
+    }
 }
 
 let getData = (selectedCountry, val) => {

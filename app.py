@@ -82,14 +82,14 @@ def loadTimelineChart():
     deathForCountryDf.to_csv(filename)
     return jsonify(key="success")
 
-@app.route('/bubble_chart', methods = ['GET'])
-def bubbleScatterChart():
-    country = request.args.get("country")
-    fromYear = int(request.args.get("fromYear"))
-    toYear = int(request.args.get("toYear"))
-
-    # Prepare data
-    return jsonify(key="success")
+@app.route('/getListOfCountries', methods = ['GET'])
+def getListOfCountries():
+    overallDeaths = pd.read_csv('static/data/overallDeaths.csv')
+    allCountries = []
+    countriesList = pd.DataFrame(overallDeaths['Entity'])
+    for index, country in countriesList.iterrows():
+        allCountries.append(country['Entity'])
+    return jsonify(allCountries=allCountries)
 
 if __name__ == '__main__':
     app.run()
