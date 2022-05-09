@@ -94,6 +94,11 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
             .attr("x", 0)
             .attr("width", function (d) {
                 return x(d.Deaths/1.5);
+            })
+            .on('click', function(d){
+                let diseasesToShow = [];
+                diseasesToShow.push(d['Disease']);
+                timelineChartLoader('static/data/TimelineCntCountryWise.csv', selectedCountry, fromYear, toYear, diseasesToShow);
             });
 
         //add a value label to the right of each bar
@@ -466,7 +471,7 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear, diseas
               svg.select(".title-text").remove();
             })
           .on("click", function(d) {
-              alert("Clicked");
+              // Do Something
             })
           .append('path')
           .attr('class', 'line')
@@ -562,7 +567,7 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear, diseas
           .attr("class", "y axis")
           .call(yAxis)
           .append('text')
-          .attr("y", 15)
+          .attr("y", -40)
           .attr("transform", "rotate(-90)")
           .attr("fill", "#000")
           .text("Total Deaths");
