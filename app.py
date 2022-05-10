@@ -10,9 +10,12 @@ def loadHomeDashboard():
     # return render_template("index.html")
     # return render_template("pie_chart.html")
     # return render_template("timeline_chart.html")
-    # return render_template("bubblescatter_chart.html")
+#     return render_template("bubblescatter_chart.html")
     # return render_template("choropleth_demo.html")
-    return render_template("dashboard.html")
+#     return render_template("pie_chart.html")
+    return render_template("bubble_chart.html")
+#     return render_template("stacked_area_chart.html")
+#     return render_template("dashboard.html")
 
 @app.route('/bar_chart', methods = ['GET'])
 def loadBarChart():
@@ -67,6 +70,62 @@ def loadPieChart():
     filename = 'static/data/PieDCountCtryAndYear.csv'
     diseaseCount_df.columns = ['Disease', 'Deaths']
     diseaseCount_df.to_csv(filename)
+    return jsonify(key="success")
+
+@app.route('/stacked_area_chart', methods = ['GET'])
+def loadStackedAreaChart():
+    country = request.args.get("country")
+    fromYear = int(request.args.get("fromYear"))
+    toYear = int(request.args.get("toYear"))
+    # Prepare data
+    overallDeathsByYear = pd.read_csv('static/data/overall_deaths_by_age.csv')
+    overallDeathsByYear = overallDeathsByYear.drop(columns=['Unnamed: 0'])
+    deathForCountryDf = overallDeathsByYear[overallDeathsByYear['Entity'] == country]
+    deathForCountryDf = deathForCountryDf[deathForCountryDf['Year'] >= fromYear]
+    deathForCountryDf = deathForCountryDf[deathForCountryDf['Year'] <= toYear]
+    # deathForCountryDf = deathForCountryDf.drop(columns=['Year'])
+    # deathForCountryDf = deathForCountryDf.groupby('Entity').sum().reset_index()
+    deathForCountryDf = deathForCountryDf.drop(columns=['Entity'])
+    deathForCountryDf = deathForCountryDf.rename(columns={'Year': 'year'})
+
+#     column_headers = deathForCountryDf.columns.values
+#     deathsData = deathForCountryDf.values[0]
+#     diseasesCSV = []
+#     for i in range(len(deathsData)):
+#         diseasesCSV.append((column_headers[i], deathsData[i]))
+#
+#     diseaseCount_df = pd.DataFrame(diseasesCSV)
+    filename = 'static/data/StackedAreaChartCountryYear.csv'
+#     diseaseCount_df.columns = ['Disease', 'Deaths']
+    deathForCountryDf.to_csv(filename)
+    return jsonify(key="success")
+
+@app.route('/bubble_chart', methods = ['GET'])
+def BubbleChart():
+    country = request.args.get("country")
+    fromYear = int(request.args.get("fromYear"))
+    toYear = int(request.args.get("toYear"))
+    # Prepare data
+    overallDeathsByYear = pd.read_csv('static/data/overall_deaths_by_age.csv')
+    overallDeathsByYear = overallDeathsByYear.drop(columns=['Unnamed: 0'])
+    deathForCountryDf = overallDeathsByYear[overallDeathsByYear['Entity'] == country]
+    deathForCountryDf = deathForCountryDf[deathForCountryDf['Year'] >= fromYear]
+    deathForCountryDf = deathForCountryDf[deathForCountryDf['Year'] <= toYear]
+    # deathForCountryDf = deathForCountryDf.drop(columns=['Year'])
+    # deathForCountryDf = deathForCountryDf.groupby('Entity').sum().reset_index()
+    deathForCountryDf = deathForCountryDf.drop(columns=['Entity'])
+    deathForCountryDf = deathForCountryDf.rename(columns={'Year': 'year'})
+
+#     column_headers = deathForCountryDf.columns.values
+#     deathsData = deathForCountryDf.values[0]
+#     diseasesCSV = []
+#     for i in range(len(deathsData)):
+#         diseasesCSV.append((column_headers[i], deathsData[i]))
+#
+#     diseaseCount_df = pd.DataFrame(diseasesCSV)
+    filename = 'static/data/StackedAreaChartCountryYear.csv'
+#     diseaseCount_df.columns = ['Disease', 'Deaths']
+    deathForCountryDf.to_csv(filename)
     return jsonify(key="success")
 
 @app.route('/timeline_chart', methods = ['GET'])

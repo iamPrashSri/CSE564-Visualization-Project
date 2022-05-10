@@ -35,6 +35,43 @@ function drawPieChart(selectedCountry, fromYear, toYear){
     });
 }
 
+function drawStackedAreaChart(selectedCountry, fromYear, toYear){
+    $.ajax({
+        type: "GET",
+        data: {
+            country: selectedCountry,
+            fromYear: fromYear,
+            toYear: toYear
+        },
+        url: '/stacked_area_chart',
+        dataType: "json",
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+            let filename = 'static/data/StackedAreaChartCountryYear.csv';
+            StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear);
+        }
+    });
+}
+
+
+function drawBubbleChart(selectedCountry, fromYear, toYear){
+    $.ajax({
+        type: "GET",
+        data: {
+            country: selectedCountry,
+            fromYear: fromYear,
+            toYear: toYear
+        },
+        url: '/stacked_area_chart',
+        dataType: "json",
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+            let filename = 'static/data/StackedAreaChartCountryYear.csv';
+            BubbleChartLoader(filename, selectedCountry, fromYear, toYear);
+        }
+    });
+}
+
 function drawYearlySlider(selectedCountry){
     var data = [1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000,
                 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011,
