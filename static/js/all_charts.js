@@ -28,7 +28,7 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
         })
 
         var margin = {
-            top: 10,
+            top: 30,
             right: 0,
             bottom: 15,
             left: 155
@@ -52,7 +52,7 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
 
         var y = d3.scaleBand()
             .rangeRound([height, 0])
-            .padding(0.1)
+            .padding(0.2)
             .domain(filteredData.map(function (d) {
                 return d.Disease;
             }));
@@ -60,7 +60,7 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
         svg.append("text")
             .attr("class", "heading")
             .attr("y", function () {
-                return 5;
+                return -10;
             })
             .attr("x", function () {
                 return -70;
@@ -374,20 +374,32 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x).ticks(5))
 
-        // Add X axis label:
-        svg.append("text")
-            .attr("text-anchor", "end")
-            .attr("x", width)
-            .attr("y", height+40 )
-            .text("Time (year)");
+        // // Add X axis label:
+        // svg.append("text")
+        //     .attr("text-anchor", "end")
+        //     .attr("x", width)
+        //     .attr("y", height+40 )
+        //     .text("Time (year)");
+        //
+        // // Add Y axis label:
+        // svg.append("text")
+        //     .attr("text-anchor", "end")
+        //     .attr("x", 0)
+        //     .attr("y", -10 )
+        //     .text("Deaths by age")
+        //     .attr("text-anchor", "start")
 
-        // Add Y axis label:
         svg.append("text")
-            .attr("text-anchor", "end")
-            .attr("x", 0)
-            .attr("y", -20 )
-            .text("Deaths by age")
-            .attr("text-anchor", "start")
+            .attr("class", "heading")
+            .attr("y", function () {
+                return height+40;
+            })
+            .attr("x", function () {
+                return -70;
+            })
+            .text(function () {
+                return "Deaths by age over a period from " + fromYear + " to " + toYear + " (" + selectedCountry + ")";
+            });
 
         // Add Y axis
         var y = d3.scaleLinear()

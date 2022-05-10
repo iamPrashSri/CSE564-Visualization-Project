@@ -17,7 +17,7 @@
 </head>
 <body>
 <div class="container">
-  <table class="table table-bordered">
+  <table class="table table-borderless">
       <tbody>
           {# Range Slider and Country Selector Dropdown#}
           <tr>
@@ -38,33 +38,35 @@
   </table>
 </div>
 <div class="container" style="margin: 0">
-  <table class="table table-bordered">
-      <tbody>
+    <table class="table table-borderless">
+        <tbody>
         <tr>
             <td>
-                <div id="pie_chart"></div>
-            </td>
-            <td>
-                <div id="timeline_chart"></div>
+                <div id="choropleth_map"></div>
             </td>
             <td>
                 <div id="bar_chart"></div>
             </td>
         </tr>
-      </tbody>
-  </table>
-  <table class="table table-bordered">
+        </tbody>
+    </table>
+  <table class="table table-borderless">
       <tbody>
-          <tr>
-            <td>
-                <div id="choropleth_map"></div>
-            </td>
+        <tr>
             <td>
                 <div id="stacked_area_chart"></div>
+
             </td>
-          </tr>
+            <td>
+                <div id="timeline_chart"></div>
+            </td>
+            <td>
+                <div id="pie_chart"></div>
+            </td>
+        </tr>
       </tbody>
   </table>
+
 </div>
 
 <script src="https://d3js.org/d3.v6.min.js"></script>
@@ -94,7 +96,7 @@
         drawTimelineChart(countrySelectedInDropdown, 2000, 2010);
         drawBarChart(countrySelectedInDropdown, 2000, 2010);
         drawStackedAreaChart(countrySelectedInDropdown, 2000, 2010);
-        {#drawChoroplethMap(countrySelectedInDropdown, 2000, 2010);#}
+        {drawChoroplethMap(countrySelectedInDropdown, 2000, 2010);}
     }
     $(document).ready(function() {
         $('.js-example-basic-single').select2();
