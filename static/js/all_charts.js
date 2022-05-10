@@ -1196,8 +1196,8 @@ function choroplethMapLoader(filename, fromYear, toYear){
 
       if (d && centered !== d) {
         var centroid = path.centroid(d);
-        x = -(centroid[0] * 6);
-        y = (centroid[1] * 6);
+        x = -(centroid[0] * 5);
+        y = (centroid[1] * 8);
         k = 3;
         centered = d;
       } else {
