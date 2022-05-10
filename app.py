@@ -13,9 +13,9 @@ def loadHomeDashboard():
 #     return render_template("bubblescatter_chart.html")
     # return render_template("choropleth_demo.html")
 #     return render_template("pie_chart.html")
-    return render_template("bubble_chart.html")
+#     return render_template("bubble_chart.html")
 #     return render_template("stacked_area_chart.html")
-#     return render_template("dashboard.html")
+    return render_template("dashboard.html")
 
 @app.route('/bar_chart', methods = ['GET'])
 def loadBarChart():
@@ -97,7 +97,7 @@ def loadStackedAreaChart():
 #     diseaseCount_df = pd.DataFrame(diseasesCSV)
     filename = 'static/data/StackedAreaChartCountryYear.csv'
 #     diseaseCount_df.columns = ['Disease', 'Deaths']
-    deathForCountryDf.to_csv(filename)
+#     deathForCountryDf.to_csv(filename)
     return jsonify(key="success")
 
 @app.route('/bubble_chart', methods = ['GET'])

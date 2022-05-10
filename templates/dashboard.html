@@ -60,7 +60,9 @@
             <td>
                 <div id="choropleth_map"></div>
             </td>
-            <td>Thornton</td>
+            <td>
+                <div id="stacked_area_chart"></div>
+            </td>
           </tr>
       </tbody>
   </table>
@@ -85,12 +87,14 @@
         drawPieChart("Afghanistan", 2000, 2010);
         drawTimelineChart("Afghanistan", 2000, 2010);
         drawBarChart("Afghanistan", 2000, 2010);
+        drawStackedAreaChart("Afghanistan", 2000, 2010);
         drawChoroplethMap(undefined, 2000, 2010);
     } else {
         drawYearlySlider(countrySelectedInDropdown);
         drawPieChart(countrySelectedInDropdown, 2000, 2010);
         drawTimelineChart(countrySelectedInDropdown, 2000, 2010);
         drawBarChart(countrySelectedInDropdown, 2000, 2010);
+        drawStackedAreaChart(countrySelectedInDropdown, 2000, 2010);
         {#drawChoroplethMap(countrySelectedInDropdown, 2000, 2010);#}
     }
     $(document).ready(function() {
