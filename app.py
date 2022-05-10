@@ -11,6 +11,7 @@ def loadHomeDashboard():
     # return render_template("pie_chart.html")
     # return render_template("timeline_chart.html")
     # return render_template("bubblescatter_chart.html")
+    # return render_template("choropleth_demo.html")
     return render_template("dashboard.html")
 
 @app.route('/bar_chart', methods = ['GET'])
@@ -97,6 +98,31 @@ def getListOfCountries():
     for index, country in countriesList.iterrows():
         allCountries.append(country['Entity'])
     return jsonify(allCountries=allCountries)
+
+@app.route('/choropleth_map', methods = ['GET'])
+def loadChoroplethMap():
+    # Preparing data
+    country = request.args.get("country")
+    fromYear = int(request.args.get("fromYear"))
+    toYear = int(request.args.get("toYear"))
+
+    # Preparing data
+    overallDeathsFilter = pd.read_csv('static/data/filteredDeathsYearWise.csv')
+    overallDeathsFilter = overallDeathsFilter[overallDeathsFilter['Year'] >= fromYear]
+    overallDeathsFilter = overallDeathsFilter[overallDeathsFilter['Year'] <= toYear]
+    overallDeathsFilter = overallDeathsFilter.drop(columns=['Year'])
+    if country is not None:
+        overallDeathsFilter = overallDeathsFilter[overallDeathsFilter['Entity'] == country]
+    overallDeathsFilter = overallDeathsFilter.groupby(['Entity', 'Code']).sum().reset_index()
+
+    deathsForMap = pd.DataFrame()
+    deathsForMap['name'] = overallDeathsFilter['Entity']
+    deathsForMap['code'] = overallDeathsFilter['Code']
+    deathsForMap['deaths'] = overallDeathsFilter.sum(axis=1)
+
+    filename = 'static/data/choroplethMapData.csv'
+    deathsForMap.to_csv(filename)
+    return jsonify(key="success")
 
 if __name__ == '__main__':
     app.run()

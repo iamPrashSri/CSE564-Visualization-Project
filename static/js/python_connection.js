@@ -71,3 +71,21 @@ function drawCountryDropdown(){
         }
     });
 }
+
+function drawChoroplethMap(selectedCountry, fromYear, toYear){
+    $.ajax({
+        type: "GET",
+        data: {
+            country: selectedCountry,
+            fromYear: fromYear,
+            toYear: toYear
+        },
+        url: '/choropleth_map',
+        dataType: "json",
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+            let filename = 'static/data/choroplethMapData.csv';
+            choroplethMapLoader(filename, fromYear, toYear);
+        }
+    });
+}
