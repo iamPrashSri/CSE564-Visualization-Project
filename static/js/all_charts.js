@@ -1090,7 +1090,8 @@ function choroplethMapLoader(filename, fromYear, toYear){
                 .transition()
                 .duration(200)
                 .style("opacity", 1)
-                .style("stroke", "black");
+                .style("stroke", "black")
+                .style("cursor", "pointer");
             tooltip.style("left", (d3.event.pageX + 15) + "px")
                 .style("top", (d3.event.pageY - 28) + "px")
                 .transition().duration(400)
@@ -1187,7 +1188,7 @@ function choroplethMapLoader(filename, fromYear, toYear){
                 return d[0] / 1000000 + " m - " + d[1] / 1000000 + " m";
             });
 
-        legend.append("text").attr("x", 15).attr("y", 300).text("Overall Deaths (Million)");
+        legend.append("text").attr("x", 0).attr("y", 300).text("Overall Deaths (Million): " + fromYear + " - " + toYear);
     }
 
     // Zoom functionality
@@ -1213,6 +1214,16 @@ function choroplethMapLoader(filename, fromYear, toYear){
       world.transition()
           .duration(750)
           .attr("transform", "translate(" + x + "," + y + ") scale(" + k + ")" );
+
+      // Redraw all charts for selected country with new data based on slider info
+      // That too while zooming in. Not zooming out
+      if(k == 3){
+          let selectedCountry = d.properties.name;
+          drawBarChart(selectedCountry, fromYear, toYear);
+          drawPieChart(selectedCountry, fromYear, toYear);
+          drawStackedAreaChart(selectedCountry, fromYear, toYear);
+          drawTimelineChart(selectedCountry, fromYear, toYear);
+      }
     }
 }
 
@@ -1221,6 +1232,7 @@ let getData = (selectedCountry, val) => {
     drawPieChart(selectedCountry, val[0], val[1]);
     drawTimelineChart(selectedCountry, val[0], val[1]);
     drawBarChart(selectedCountry, val[0], val[1]);
+    drawChoroplethMap(undefined, val[0], val[1]);
 };
 
 let performDebouncing = function(fn, delay) {
