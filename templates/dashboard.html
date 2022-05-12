@@ -22,13 +22,13 @@
 <div class="wrapper">
     <nav>
         <div class="content" style="display: flex">
-            <div class="logo"><a href="#">World Mortality Dashboard</a></div>
+            <div class="logo"><a href="#" onclick="reloadpage()">World Mortality Dashboard</a></div>
             <div style="display: flex">
                             <div class="col-sm-3" style="margin-left:20px; max-width: fit-content;"}><div id="slider-range"></div></div>
-                            <div style="margin-top: 20px">
-                                <select class="js-example-basic-single" name="state" id="countryDropdown" style="width: 100%">
-                                </select>
-                            </div>
+            </div>
+            <div style="width:220px;margin-top: 10px">
+                <select class="js-example-basic-single" name="state" id="countryDropdown" style="width: 100%">
+                </select>
             </div>
         </div>
     </nav>
@@ -111,6 +111,11 @@
         drawTimelineChart(country, 2000, 2010);
         drawBarChart(country, 2000, 2010);
     });
+
+    function reloadpage()
+    {
+        window.location.reload();
+    }
 </script>
 </body>
 </html>

@@ -20,15 +20,22 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
 
         // var color = d3.scaleOrdinal(d3.schemeCategory10);
         // var color = d3.scaleOrdinal(d3.schemeOrRd[9]);
-        let colorCode = 0;
-        for(let d of filteredData){
-            d['colorCode'] = d.Deaths+colorCode%9;
-        }
+        color_list = ['#8b0000','#b22222','#ff0000','#dc143c','#cd5c5c','#ffa07a']
+        var color = d3.scaleOrdinal(color_list);
+
 
         //sort bars based on value
         filteredData = filteredData.sort(function (a, b) {
             return d3.ascending(a.Deaths, b.Deaths);
         })
+
+        let colorCode = 6;
+
+        for(let d of filteredData){
+            console.log(d)
+            d['colorCode'] = (colorCode);
+            colorCode-=1
+        }
 
         var margin = {
             top: 30,
@@ -85,25 +92,6 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
             .enter()
             .append("g")
 
-        bars.append("rect")
-            .attr("class", "bar")
-            .attr("y", function (d) {
-                return y(d.Disease);
-            })
-            .style("fill", function (d, i) {
-                return color(+d.colorCode);
-            })
-            .attr("height", y.bandwidth())
-            .attr("x", 0)
-            .attr("width", function (d) {
-                return x(d.Deaths/1.5);
-            })
-            .on('click', function(d){
-                let diseasesToShow = [];
-                diseasesToShow.push(d['Disease']);
-                timelineChartLoader('static/data/TimelineCntCountryWise.csv', selectedCountry, fromYear, toYear, diseasesToShow);
-            });
-
         //add a value label to the right of each bar
         bars.append("text")
             .attr("class", "label")
@@ -115,9 +103,36 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
             .attr("x", function (d) {
                 return x(d.Deaths/1.5) + 8;
             })
+            .transition()
+            .duration(1500)
+            .delay(function(d,i){ return 1300})
             .text(function (d) {
                 return d.Deaths.toLocaleString();
             });
+
+        bars.append("rect")
+            .attr("class", "bar")
+            .on('click', function(d){
+                let diseasesToShow = [];
+                diseasesToShow.push(d['Disease']);
+                timelineChartLoader('static/data/TimelineCntCountryWise.csv', selectedCountry, fromYear, toYear, diseasesToShow);
+            })
+            .attr("y", function (d) {
+                return y(d.Disease);
+            })
+            .style("fill", function (d, i) {
+                return color(+d.colorCode);
+            })
+            .attr("height", y.bandwidth())
+            .attr("x", 0)
+            .attr("width", 0)
+            .transition()
+            .duration(1500)
+            .delay(function(d,i){ return i*25})//a different delay for each bar
+            .attr("width", function (d) {
+                return x(d.Deaths/1.5);
+            });
+
     });
 }
 
@@ -343,6 +358,7 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
+
 
     d3.csv(filename, function(data) {
         // List of groups = header of the csv files
@@ -591,8 +607,8 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear, diseas
         }
 
         var width = 400;
-        var height = 230;
-        var margin = 50;
+        var height = 220;
+        var margin = 70;
         var duration = 250;
 
         var lineOpacity = "0.25";
@@ -628,6 +644,8 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear, diseas
 
         // var color = d3.scaleOrdinal(d3.schemeCategory10);
         // var color = d3.scaleOrdinal(d3.schemeOrRd[9]);
+        color_list = ['#8b0000','#b22222','#ff0000','#dc143c','#cd5c5c','#ffa07a']
+        var color = d3.scaleOrdinal(color_list);
         /* Add SVG */
         var svg = d3.select("#timeline_chart").append("svg")
           .attr("width", (width+margin)+"px")
@@ -758,7 +776,7 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear, diseas
           .attr("class", "y axis")
           .call(yAxis)
           .append('text')
-          .attr("y", -40)
+          .attr("y", -60)
           .attr("transform", "rotate(-90)")
           .style('fill', fontcolor)
           .text("Total Deaths");
@@ -971,9 +989,15 @@ function choroplethMapLoader(filename, fromYear, toYear){
       // That too while zooming in. Not zooming out
       if(k == 3){
           let selectedCountry = d.properties.name;
+          if (selectedCountry == 'USA'){
+              selectedCountry = 'United States'
+          }
+          if (selectedCountry == 'Democratic Republic of the Congo'){
+              selectedCountry = 'Democratic Republic of Congo'
+          }
           drawBarChart(selectedCountry, fromYear, toYear);
           drawPieChart(selectedCountry, fromYear, toYear);
-          drawStackedAreaChart(selectedCountry, fromYear, toYear);
+          // drawStackedAreaChart(selectedCountry, fromYear, toYear);
           drawTimelineChart(selectedCountry, fromYear, toYear);
           drawStackedAreaChart(selectedCountry, fromYear, toYear);
 
