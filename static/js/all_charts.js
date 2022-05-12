@@ -324,7 +324,6 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
 
 function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
     document.getElementById("stacked_area_chart").innerHTML = "";
-
     var margin = {top: 60, right: 150, bottom: 50, left: 80},
         width = 550 - margin.left - margin.right,
         height = 280 - margin.top - margin.bottom;

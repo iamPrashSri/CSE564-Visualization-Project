@@ -96,7 +96,7 @@
         drawTimelineChart(countrySelectedInDropdown, 2000, 2010);
         drawBarChart(countrySelectedInDropdown, 2000, 2010);
         drawStackedAreaChart(countrySelectedInDropdown, 2000, 2010);
-        {drawChoroplethMap(countrySelectedInDropdown, 2000, 2010);}
+        drawChoroplethMap(countrySelectedInDropdown, 2000, 2010);
     }
     $(document).ready(function() {
         $('.js-example-basic-single').select2();
@@ -108,6 +108,7 @@
     $('#countryDropdown').on('select2:select', function (e) {
         let country = e.params.data.text;
         drawYearlySlider(country);
+        drawStackedAreaChart(country, 2000, 2010);
         drawPieChart(country, 2000, 2010);
         drawTimelineChart(country, 2000, 2010);
         drawBarChart(country, 2000, 2010);
