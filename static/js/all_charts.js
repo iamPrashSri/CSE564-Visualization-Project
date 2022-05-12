@@ -1,3 +1,5 @@
+var color = d3.scaleOrdinal( d3.schemeOrRd[9]);
+var fontcolor = 'white'
 function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToShow){
     document.getElementById("bar_chart").innerHTML = "";
     d3.csv(filename, function(error, data){
@@ -16,10 +18,11 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
             });
         }
 
-        var color = d3.scaleOrdinal(d3.schemeCategory10);
+        // var color = d3.scaleOrdinal(d3.schemeCategory10);
+        // var color = d3.scaleOrdinal(d3.schemeOrRd[9]);
         let colorCode = 0;
         for(let d of filteredData){
-            d['colorCode'] = colorCode++%10;
+            d['colorCode'] = d.Deaths+colorCode%9;
         }
 
         //sort bars based on value
@@ -172,7 +175,8 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
         var legendSpacing = 8; // defines spacing between squares
 
         // define color scale
-        var color = d3.scaleOrdinal(d3.schemeCategory20c);
+        // var color = d3.scaleOrdinal(d3.schemeCategory20c);
+        // var color = d3.scaleOrdinal(d3.schemeOrRd[9]);
         var yOffset = 30;
         var xOffset = 150;
         var svg = d3.select('#pie_chart') // select element in the DOM with id 'chart'
@@ -358,10 +362,11 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
         }
 
         // color palette
-        var color = d3.scaleOrdinal()
-            .domain(keys)
-            .range(d3.schemeSet2);
+        // var color = d3.scaleOrdinal()
+        //     .domain(keys)
+        //     .range( d3.schemeReds[1]);
 
+        // var color = d3.scaleOrdinal(d3.schemeOrRd[9]);
         var stackedData = d3.stack()
             .keys(keys)
             (data)
@@ -381,6 +386,7 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
             .attr("x", function () {
                 return 0;
             })
+            .style('fill', fontcolor)
             .text(function () {
                 return "Deaths by age over a period from " + fromYear + " to " + toYear + " (" + selectedCountry + ")";
             });
@@ -611,8 +617,8 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear, diseas
           .domain([0, d3.max(allDiseaseCount, d => d.price)])
           .range([height-margin, 0]);
 
-        var color = d3.scaleOrdinal(d3.schemeCategory10);
-
+        // var color = d3.scaleOrdinal(d3.schemeCategory10);
+        // var color = d3.scaleOrdinal(d3.schemeOrRd[9]);
         /* Add SVG */
         var svg = d3.select("#timeline_chart").append("svg")
           .attr("width", (width+margin)+"px")
@@ -791,9 +797,9 @@ function choroplethMapLoader(filename, fromYear, toYear){
         .translate([width / 2, height / 2]);
 
     // Define color scale
-    const colorScale = d3.scaleThreshold()
-        .domain([100000, 1000000, 10000000, 30000000, 50000000, 70000000])
-        .range(d3.schemeOrRd[7]);
+    // const color = d3.scaleThreshold()
+    //     .domain([100000, 1000000, 10000000, 30000000, 50000000, 70000000])
+    //     .range(d3.schemeOrRd[7]);
 
     // add tooltip
     const tooltip = d3.select("body").append("div")
@@ -864,7 +870,7 @@ function choroplethMapLoader(filename, fromYear, toYear){
             // set the color of each country
             .attr("fill", function(d) {
                 d.total = data.get(d.id) || 0;
-                return colorScale(d.total);
+                return color(d.total);
             })
 
             // add a class, styling and mouseover/mouseleave and click functions
@@ -889,8 +895,8 @@ function choroplethMapLoader(filename, fromYear, toYear){
             .attr("id", "legend");
 
         const legend_entry = legend.selectAll("g.legend")
-            .data(colorScale.range().map(function(d) {
-                d = colorScale.invertExtent(d);
+            .data(color.range().map(function(d) {
+                d = color.invertExtent(d);
                 if (d[0] == null) d[0] = x.domain()[0];
                 if (d[1] == null) d[1] = x.domain()[1];
                 return d;
@@ -909,7 +915,7 @@ function choroplethMapLoader(filename, fromYear, toYear){
             .attr("width", ls_w)
             .attr("height", ls_h)
             .style("fill", function(d) {
-                return colorScale(d[0]);
+                return color(d[0]);
             })
             .style("opacity", 0.8);
 
