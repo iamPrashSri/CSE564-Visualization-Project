@@ -176,7 +176,8 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
 
         // define color scale
         // var color = d3.scaleOrdinal(d3.schemeCategory20c);
-        // var color = d3.scaleOrdinal(d3.schemeOrRd[9]);
+        var color = d3.scaleOrdinal(d3.schemeOrRd[9]);
+
         var yOffset = 30;
         var xOffset = 150;
         var svg = d3.select('#pie_chart') // select element in the DOM with id 'chart'
