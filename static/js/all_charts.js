@@ -401,7 +401,7 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
                 return height+40;
             })
             .attr("x", function () {
-                return -70;
+                return 0;
             })
             .text(function () {
                 return "Deaths by age over a period from " + fromYear + " to " + toYear + " (" + selectedCountry + ")";
