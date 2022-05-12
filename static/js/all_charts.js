@@ -31,7 +31,7 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
             top: 30,
             right: 0,
             bottom: 15,
-            left: 155
+            left: 185
         };
 
         var width = 750 - margin.left - margin.right,
@@ -63,7 +63,7 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
                 return -10;
             })
             .attr("x", function () {
-                return -70;
+                return 0;
             })
             .text(function () {
                 return "Deaths caused over a period from " + fromYear + " to " + toYear + " (" + selectedCountry + ")";
@@ -110,7 +110,7 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
             })
             //x position is 3 pixels to the right of the bar
             .attr("x", function (d) {
-                return x(d.Deaths/1.5) + 1;
+                return x(d.Deaths/1.5) + 8;
             })
             .text(function (d) {
                 return d.Deaths.toLocaleString();
@@ -504,9 +504,10 @@ function sliderLoader(selectedCountry, data){
     .max(d3.max(data))
     .width(800)
     .ticks(16)
+    .tickFormat(d3.format('.0f'))
     .step(1)
     .default([2000, 2010])
-    .fill('#2196f3')
+    .fill('#27c2e5')
     .on('onchange', val => {
         // Debouncing call on each step
         debounceFunction(selectedCountry, val);
