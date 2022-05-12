@@ -360,8 +360,6 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
             .keys(keys)
             (data)
 
-
-
         //////////
         // AXIS //
         //////////
@@ -1232,6 +1230,7 @@ let getData = (selectedCountry, val) => {
     drawPieChart(selectedCountry, val[0], val[1]);
     drawTimelineChart(selectedCountry, val[0], val[1]);
     drawBarChart(selectedCountry, val[0], val[1]);
+    drawStackedAreaChart(selectedCountry, val[0], val[1]);
     drawChoroplethMap(undefined, val[0], val[1]);
 };
 

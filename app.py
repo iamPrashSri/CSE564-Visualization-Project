@@ -83,21 +83,11 @@ def loadStackedAreaChart():
     deathForCountryDf = overallDeathsByYear[overallDeathsByYear['Entity'] == country]
     deathForCountryDf = deathForCountryDf[deathForCountryDf['Year'] >= fromYear]
     deathForCountryDf = deathForCountryDf[deathForCountryDf['Year'] <= toYear]
-    # deathForCountryDf = deathForCountryDf.drop(columns=['Year'])
-    # deathForCountryDf = deathForCountryDf.groupby('Entity').sum().reset_index()
     deathForCountryDf = deathForCountryDf.drop(columns=['Entity'])
     deathForCountryDf = deathForCountryDf.rename(columns={'Year': 'year'})
-
-#     column_headers = deathForCountryDf.columns.values
-#     deathsData = deathForCountryDf.values[0]
-#     diseasesCSV = []
-#     for i in range(len(deathsData)):
-#         diseasesCSV.append((column_headers[i], deathsData[i]))
-#
-#     diseaseCount_df = pd.DataFrame(diseasesCSV)
+    deathForCountryDf = deathForCountryDf.reset_index().drop(columns=['index'])
     filename = 'static/data/StackedAreaChartCountryYear.csv'
-#     diseaseCount_df.columns = ['Disease', 'Deaths']
-#     deathForCountryDf.to_csv(filename)
+    deathForCountryDf.to_csv(filename)
     return jsonify(key="success")
 
 @app.route('/bubble_chart', methods = ['GET'])
@@ -160,7 +150,6 @@ def getListOfCountries():
 
 @app.route('/choropleth_map', methods = ['GET'])
 def loadChoroplethMap():
-    # Preparing data
     country = request.args.get("country")
     fromYear = int(request.args.get("fromYear"))
     toYear = int(request.args.get("toYear"))
@@ -178,7 +167,6 @@ def loadChoroplethMap():
     deathsForMap['name'] = overallDeathsFilter['Entity']
     deathsForMap['code'] = overallDeathsFilter['Code']
     deathsForMap['deaths'] = overallDeathsFilter.sum(axis=1)
-
     filename = 'static/data/choroplethMapData.csv'
     deathsForMap.to_csv(filename)
     return jsonify(key="success")
