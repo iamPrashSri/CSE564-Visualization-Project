@@ -176,7 +176,10 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
 
         // define color scale
         // var color = d3.scaleOrdinal(d3.schemeCategory20c);
-        var color = d3.scaleOrdinal(d3.schemeOrRd[9]);
+        // var color = d3.scaleOrdinal(d3.schemeOrRd[9]);
+
+        var color = d3.scaleOrdinal()
+            .range(['#AE3232','#F2846D','#FEC99D']);
 
         var yOffset = 30;
         var xOffset = 150;
@@ -363,11 +366,14 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
         }
 
         // color palette
-        // var color = d3.scaleOrdinal()
-        //     .domain(keys)
-        //     .range( d3.schemeReds[1]);
+        var color = d3.scaleOrdinal()
+            .domain(keys)
+            .range(['#AE3232','#DF594E','#F2846D','#FCA47C','#FEC99D']);
 
         // var color = d3.scaleOrdinal(d3.schemeOrRd[9]);
+        // var color = d3.scaleOrdinal(d3.schemeReds[6]);
+
+        // var color = ['#AE3232','#DF594E','#F2846D','#FCA47C','#FEC99D']
         var stackedData = d3.stack()
             .keys(keys)
             (data)
