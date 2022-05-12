@@ -1,5 +1,5 @@
 var color = d3.scaleOrdinal( d3.schemeOrRd[9]);
-var fontcolor = 'white'
+var fontcolor = 'black'
 function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToShow){
     document.getElementById("bar_chart").innerHTML = "";
     d3.csv(filename, function(error, data){
@@ -378,6 +378,7 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x).ticks(5))
 
+
         svg.append("text")
             .attr("class", "heading")
             .attr("y", function () {
@@ -394,6 +395,7 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
         var y = d3.scaleLinear()
             .domain([0, max_range * 2.5])
             .range([ height, 0 ]);
+
         svg.append("g")
             .call(d3.axisLeft(y).ticks(5))
 
@@ -737,6 +739,7 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear, diseas
             .attr("y", function () {
                 return height;
             })
+            .style('fill', fontcolor)
             .attr("x", function () {
                 return 0;
             })
@@ -750,7 +753,7 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear, diseas
           .append('text')
           .attr("y", -40)
           .attr("transform", "rotate(-90)")
-          .attr("fill", "#000")
+          .style('fill', fontcolor)
           .text("Total Deaths");
     });
 }
@@ -797,9 +800,9 @@ function choroplethMapLoader(filename, fromYear, toYear){
         .translate([width / 2, height / 2]);
 
     // Define color scale
-    // const color = d3.scaleThreshold()
-    //     .domain([100000, 1000000, 10000000, 30000000, 50000000, 70000000])
-    //     .range(d3.schemeOrRd[7]);
+    const color = d3.scaleThreshold()
+        .domain([100000, 1000000, 10000000, 30000000, 50000000, 70000000])
+        .range(d3.schemeOrRd[7]);
 
     // add tooltip
     const tooltip = d3.select("body").append("div")
