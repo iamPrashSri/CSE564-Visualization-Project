@@ -34,8 +34,8 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
             left: 155
         };
 
-        var width = 500 - margin.left - margin.right,
-            height = 280 - margin.top - margin.bottom;
+        var width = 750 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
 
         var svg = d3.select("#bar_chart").append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -52,7 +52,7 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
 
         var y = d3.scaleBand()
             .rangeRound([height, 0])
-            .padding(0.2)
+            .padding(0.3)
             .domain(filteredData.map(function (d) {
                 return d.Disease;
             }));
@@ -110,7 +110,7 @@ function barChartLoader(filename, selectedCountry, fromYear, toYear, diseasesToS
             })
             //x position is 3 pixels to the right of the bar
             .attr("x", function (d) {
-                return x(d.Deaths/1.5) + 3;
+                return x(d.Deaths/1.5) + 1;
             })
             .text(function (d) {
                 return d.Deaths.toLocaleString();
@@ -326,8 +326,8 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
     document.getElementById("stacked_area_chart").innerHTML = "";
 
 // set the dimensions and margins of the graph
-    var margin = {top: 60, right: 230, bottom: 50, left: 80},
-        width = 600 - margin.left - margin.right,
+    var margin = {top: 60, right: 150, bottom: 50, left: 80},
+        width = 550 - margin.left - margin.right,
         height = 280 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
@@ -513,7 +513,7 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
             .data(keys)
             .enter()
             .append("rect")
-            .attr("x", 400)
+            .attr("x", 350)
             .attr("y", function(d,i){ return 10 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
             .attr("width", size)
             .attr("height", size)
@@ -526,7 +526,7 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
             .data(keys)
             .enter()
             .append("text")
-            .attr("x", 400 + size*1.2)
+            .attr("x", 350 + size*1.2)
             .attr("y", function(d,i){ return 10 + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
             .style("fill", function(d){ return color(d)})
             .text(function(d){ return d})
@@ -840,7 +840,7 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear, diseas
             }
         }
 
-        var width = 350;
+        var width = 400;
         var height = 230;
         var margin = 50;
         var duration = 250;
@@ -905,7 +905,7 @@ function timelineChartLoader(filename, selectedCountry, fromYear, toYear, diseas
                 .text(d.name)
                 .attr("text-anchor", "middle")
                 .attr("x", (width-margin)/2)
-                .attr("y", 5);
+                .attr("y", -30);
             })
           .on("mouseout", function(d) {
               svg.select(".title-text").remove();
@@ -1052,7 +1052,7 @@ function choroplethMapLoader(filename, fromYear, toYear){
 
     // style of geographic projection and scaling
     const projection = d3.geoRobinson()
-        .scale(130)
+        .scale(120)
         .translate([width / 2, height / 2]);
 
     // Define color scale
