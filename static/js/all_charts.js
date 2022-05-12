@@ -960,6 +960,9 @@ function choroplethMapLoader(filename, fromYear, toYear){
           drawStackedAreaChart(selectedCountry, fromYear, toYear);
           drawTimelineChart(selectedCountry, fromYear, toYear);
           drawStackedAreaChart(selectedCountry, fromYear, toYear);
+
+          $('#countryDropdown').val(selectedCountry);
+          $('#countryDropdown').trigger('change');
       }
     }
 }

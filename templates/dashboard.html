@@ -20,49 +20,15 @@
 <body>
 <div class="wrapper">
     <nav>
-<!--        <input type="checkbox" id="show-search">-->
-<!--        <input type="checkbox" id="show-menu">-->
-<!--        <label for="show-menu" class="menu-icon"><i class="fas fa-bars"></i></label>-->
         <div class="content" style="display: flex">
             <div class="logo"><a href="#">World Mortality Dashboard</a></div>
             <div style="display: flex">
-<!--                <table class="table table-borderless">-->
-<!--                    <tbody>-->
-<!--                    {# Range Slider and Country Selector Dropdown#}-->
-<!--                    <tr>-->
-<!--                        <td>-->
-<!--                            &lt;!&ndash;                  <div class="col-sm-3" style="max-width: fit-content">&ndash;&gt;-->
-<!--                            &lt;!&ndash;                      <p id="value-range"></p>&ndash;&gt;-->
-<!--                            &lt;!&ndash;                  </div>&ndash;&gt;-->
-<!--                        </td>-->
-<!--                        <td>-->
                             <div class="col-sm-3" style="margin-left:20px; max-width: fit-content;"}><div id="slider-range"></div></div>
-<!--                        </td>-->
-<!--                        <td>-->
                             <div style="margin-top: 20px">
                                 <select class="js-example-basic-single" name="state" id="countryDropdown" style="width: 100%">
                                 </select>
                             </div>
-
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    </tbody>-->
-<!--                </table>-->
             </div>
-<!--            <ul class="links">-->
-<!--                <li>-->
-<!--                    <a href="#" class="desktop-link" onclick="function_setscreen_dashboard()">Dashboard</a>-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <a href="#" class="desktop-link" onclick="function_setscreen_barplot_h()">Bar Plot / Histogram</a>-->
-<!--                    <input type="checkbox" id="show-bar-plot">-->
-<!--                    <label for="show-bar-plot">Bar Plot</label>-->
-<!--                </li>-->
-
-<!--                <li>-->
-<!--                    <a href="#" class="desktop-link" onclick="function_setscreen_scatterplot()">Scatter Plot</a>-->
-<!--                </li>-->
-<!--            </ul>-->
         </div>
     </nav>
 </div>
@@ -135,6 +101,7 @@
     $(".js-example-basic-single").select2({
         width: 'resolve' // need to override the changed default
     });
+
     $('#countryDropdown').on('select2:select', function (e) {
         let country = e.params.data.text;
         drawYearlySlider(country);
