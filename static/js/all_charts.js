@@ -342,14 +342,23 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
 // Parse the Data
     d3.csv(filename, function(data) {
 
-
         //////////
         // GENERAL //
         //////////
 
         // List of groups = header of the csv files
-        var keys = data.columns.slice(1)
+        let max_range = 0;
+        data.forEach(function (d) {
+            d['5-14 yrs'] = +d['5-14 yrs']
+            d['15-49 yrs'] = +d['15-49 yrs']
+            d['50-69 yrs'] = +d['50-69 yrs']
+            d['70+ yrs'] = +d['70+ yrs']
+            d['Under 5'] = +d['Under 5']
+            d['year'] = +d['year']
+            max_range = Math.max(d['5-14 yrs'], d['15-49 yrs'], d['50-69 yrs'], d['70+ yrs'], d['Under 5'], max_range)
+        });
 
+        var keys = data.columns.slice(2)
         // color palette
         var color = d3.scaleOrdinal()
             .domain(keys)
@@ -359,7 +368,6 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
         var stackedData = d3.stack()
             .keys(keys)
             (data)
-
         //////////
         // AXIS //
         //////////
@@ -401,14 +409,10 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
 
         // Add Y axis
         var y = d3.scaleLinear()
-            .domain([0, 10000000])
-            // .domain([0, d3.max(data, function(d) { return d.y; })])
+            .domain([0, max_range * 2.5])
             .range([ height, 0 ]);
         svg.append("g")
             .call(d3.axisLeft(y).ticks(5))
-
-
-
         //////////
         // BRUSHING AND CHART //
         //////////
@@ -486,7 +490,6 @@ function StackedAreaChartLoader(filename, selectedCountry, fromYear, toYear) {
 
         // What to do when one group is hovered
         var highlight = function(d){
-            console.log(d)
             // reduce opacity of all groups
             d3.selectAll(".myArea").style("opacity", .1)
             // expect the one that is hovered
