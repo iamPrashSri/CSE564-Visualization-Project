@@ -181,7 +181,7 @@ function pieChartLoader(filename, selectedCountry, fromYear, toYear){
         });
 
         // chart dimensions
-        var width = 440;
+        var width = 480;
         var height = 280;
         var radius = 100;
 
